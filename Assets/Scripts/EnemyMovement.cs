@@ -13,6 +13,11 @@ public class EnemyMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+    public void SetTarget(Transform newTarget)
+    {
+        target = newTarget;
+    }
+
     private void FixedUpdate()
     {
         if (target == null || rb == null) return;
