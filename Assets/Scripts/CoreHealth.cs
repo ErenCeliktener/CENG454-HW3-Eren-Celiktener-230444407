@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CoreHealth : MonoBehaviour
+public class CoreHealth : MonoBehaviour, IDamageable
 {
     [SerializeField] private int maxHealth = 10;
 
@@ -10,14 +10,6 @@ public class CoreHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         Debug.Log("Core Health: " + currentHealth + "/" + maxHealth);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            TakeDamage(1);
-        }
     }
 
     public void TakeDamage(int damageAmount)

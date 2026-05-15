@@ -4,6 +4,7 @@ public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] private Transform target;
     [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] private int contactDamage = 1;
 
     private Rigidbody2D rb;
 
@@ -22,9 +23,13 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform == target)
+        if (collision.transform != target) return;
+
+        if (collision.TryGetComponent<IDamageable>(out var damageable))
         {
-            Destroy(gameObject);
+            damageable.TakeDamage(contactDamage);
         }
+
+        Destroy(gameObject);
     }
 }
