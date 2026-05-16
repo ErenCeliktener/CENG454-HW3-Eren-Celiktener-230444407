@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 5180220140744446892}
   - component: {fileID: 6258304806609170433}
   - component: {fileID: -588467430172632558}
+  - component: {fileID: -3184359430459904090}
   m_Layer: 6
-  m_Name: Enemy
+  m_Name: EnemyTank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,7 +87,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6698113, g: 0.609781, b: 0.609781, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -108,7 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
   target: {fileID: 0}
-  moveSpeed: 2
+  moveSpeed: 0.8
   contactDamage: 1
 --- !u!50 &5180220140744446892
 Rigidbody2D:
@@ -185,4 +186,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da28b597c0033e94b9ea6bc2468a5beb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  maxHealth: 1
+  maxHealth: 5
+--- !u!114 &-3184359430459904090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749477597986874907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac7c4a84cce4a7d40bc07b6073fbcccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChargeMovementStrategy
+  chargeInterval: 4
+  chargeDuration: 0.45
+  chargeSpeedMultiplier: 5
+  windupDuration: 0.35

@@ -7,10 +7,17 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private int contactDamage = 1;
 
     private Rigidbody2D rb;
+    private IEnemyMovementStrategy movementStrategy;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        movementStrategy = GetComponent<IEnemyMovementStrategy>();
+
+        if (movementStrategy == null)
+        {
+            Debug.LogWarning($"{name} has no enemy movement strategy.");
+        }
     }
 
     public void SetTarget(Transform newTarget)
@@ -20,9 +27,14 @@ public class EnemyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (target == null || rb == null) return;
+        if (target == null || rb == null || movementStrategy == null) return;
 
-        Vector2 direction = ((Vector2)target.position - rb.position).normalized;
+        Vector2 direction = movementStrategy.GetMoveDirection(
+            transform,
+            target,
+            Time.fixedDeltaTime
+        );
+
         rb.linearVelocity = direction * moveSpeed;
     }
 
