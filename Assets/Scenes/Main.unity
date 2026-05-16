@@ -439,14 +439,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5562207c626835b4eaf711f47d28552c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  enemyPrefab: {fileID: 1749477597986874907, guid: e7d5311f75bd1c34ca6b1ba7ab312f35, type: 3}
-  coreTarget: {fileID: 1499939116}
+  waves:
+  - waveName: First
+    enemies:
+    - enemyPrefab: {fileID: 7080486998436502361, guid: b892f30db89d73144bd3f7a4764ca78f, type: 3}
+      count: 1
+      spawnDelay: 0
+    delayAfterWave: 10
+  - waveName: Second
+    enemies:
+    - enemyPrefab: {fileID: 7080486998436502361, guid: d1fe7a8ee666aaa4da595cc70d843f2f, type: 3}
+      count: 1
+      spawnDelay: 0
+    - enemyPrefab: {fileID: 7080486998436502361, guid: b892f30db89d73144bd3f7a4764ca78f, type: 3}
+      count: 2
+      spawnDelay: 0
+    delayAfterWave: 0
   spawnPoints:
   - {fileID: 639480497}
   - {fileID: 1543373411}
   - {fileID: 784283835}
   - {fileID: 1648781662}
-  spawnInterval: 2
+  coreTarget: {fileID: 1499939116}
+  loopWaves: 1
 --- !u!4 &1245111562
 Transform:
   m_ObjectHideFlags: 0
