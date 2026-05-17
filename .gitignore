@@ -42,8 +42,11 @@
 ExportedObj/
 .consulo/
 *.csproj
+*.csproj.DotSettings.user
+*.csproj.lscache
 *.unityproj
 *.sln
+*.slnx
 *.suo
 *.tmp
 *.user
@@ -100,3 +103,4 @@ InitTestScene*.unity*
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
 *.csproj.DotSettings.user
+*.csproj.lscache
