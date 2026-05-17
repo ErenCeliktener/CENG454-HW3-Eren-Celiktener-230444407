@@ -2,73 +2,47 @@ using UnityEngine;
 
 public class PlayerWeapon : MonoBehaviour
 {
+    [Header("Weapon Setup")]
     [SerializeField] private ProjectilePool projectilePool;
     [SerializeField] private Transform firePoint;
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private float fireCooldown = 0.25f;
 
-    private float cooldownTimer;
+    [Header("Base Weapon")]
+    [SerializeField] private float baseFireCooldown = 0.25f;
+
+    [Header("Decorator")]
+    [SerializeField] private bool useRapidFireDecorator = true;
+    [SerializeField] private float rapidFireMultiplier = 0.5f;
+
+    private IWeapon weapon;
+    private float fireTimer;
 
     private void Awake()
     {
-        if (mainCamera == null)
-        {
-            mainCamera = Camera.main;
-        }
+        BuildWeapon();
     }
 
     private void Update()
     {
-        UpdateCooldown();
-        HandleFireInput();
-    }
+        fireTimer -= Time.deltaTime;
 
-    private void HandleFireInput()
-    {
-        if (!Input.GetMouseButtonDown(0))
-            return;
-
-        if (cooldownTimer > 0f)
-            return;
-
-        Fire();
-        cooldownTimer = fireCooldown;
-    }
-
-    private void Fire()
-    {
-        if (projectilePool == null || firePoint == null || mainCamera == null)
-            return;
-
-        Vector2 shootDirection = GetMouseDirection();
-
-        projectilePool.Get(
-            firePoint.position,
-            Quaternion.identity,
-            shootDirection
-        );
-    }
-
-    private Vector2 GetMouseDirection()
-    {
-        Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        mouseWorldPosition.z = 0f;
-
-        Vector2 direction = mouseWorldPosition - firePoint.position;
-
-        if (direction.sqrMagnitude < 0.01f)
+        if (Input.GetMouseButton(0) && fireTimer <= 0f)
         {
-            return transform.right;
+            weapon.Fire(projectilePool, firePoint, mainCamera);
+            fireTimer = weapon.FireCooldown;
         }
-
-        return direction.normalized;
     }
 
-    private void UpdateCooldown()
+    private void BuildWeapon()
     {
-        if (cooldownTimer > 0f)
+        weapon = new BaseProjectileWeapon(baseFireCooldown);
+
+        if (useRapidFireDecorator)
         {
-            cooldownTimer -= Time.deltaTime;
+            weapon = new RapidFireWeaponDecorator(
+                weapon,
+                rapidFireMultiplier
+            );
         }
     }
 }
