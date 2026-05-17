@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3bcfa991e0886f14da5183f7fde6947e
+guid: 68d50f9da9d893d459efbce617283595
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7545178929324341314
-    second: CoreHealthBar_0
+      213: -2764252067797381311
+    second: CoreBreached_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CoreHealthBar_0
+      name: CoreBreached_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 820
-        height: 140
+        x: 96
+        y: 27
+        width: 832
+        height: 339
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: eb74cd66db32a4790800000000000000
-      internalID: -7545178929324341314
+      spriteID: 14f4c45d36763a9d0800000000000000
+      internalID: -2764252067797381311
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      CoreHealthBar_0: -7545178929324341314
+      CoreBreached_0: -2764252067797381311
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
