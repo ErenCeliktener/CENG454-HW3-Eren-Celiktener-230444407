@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -24,6 +25,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Transform coreTarget;
     [SerializeField] private bool loopWaves = false;
 
+    public event Action OnAllWavesCompleted;
+
     private void Start()
     {
         StartCoroutine(SpawnWaves());
@@ -31,6 +34,12 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnWaves()
     {
+        if (waves == null || waves.Length == 0)
+        {
+            Debug.LogWarning("EnemySpawner has no waves assigned.");
+            yield break;
+        }
+
         do
         {
             for (int i = 0; i < waves.Length; i++)
@@ -40,12 +49,27 @@ public class EnemySpawner : MonoBehaviour
             }
         }
         while (loopWaves);
+
+        yield return new WaitUntil(AllEnemiesDefeated);
+
+        Debug.Log("All waves completed.");
+        OnAllWavesCompleted?.Invoke();
     }
 
     private IEnumerator SpawnWave(EnemyWave wave)
     {
+        if (wave == null || wave.enemies == null)
+        {
+            yield break;
+        }
+
         foreach (EnemyWaveEntry entry in wave.enemies)
         {
+            if (entry == null)
+            {
+                continue;
+            }
+
             for (int i = 0; i < entry.count; i++)
             {
                 SpawnEnemy(entry.enemyPrefab);
@@ -57,13 +81,22 @@ public class EnemySpawner : MonoBehaviour
     private void SpawnEnemy(EnemyMovement enemyPrefab)
     {
         if (enemyPrefab == null)
+        {
+            Debug.LogWarning("EnemySpawner tried to spawn a missing enemy prefab.");
             return;
+        }
 
         if (spawnPoints == null || spawnPoints.Length == 0)
+        {
+            Debug.LogWarning("EnemySpawner has no spawn points assigned.");
             return;
+        }
 
         if (coreTarget == null)
+        {
+            Debug.LogWarning("EnemySpawner has no core target assigned.");
             return;
+        }
 
         Transform spawnPoint = GetRandomSpawnPoint();
 
@@ -78,7 +111,13 @@ public class EnemySpawner : MonoBehaviour
 
     private Transform GetRandomSpawnPoint()
     {
-        int randomIndex = Random.Range(0, spawnPoints.Length);
+        int randomIndex = UnityEngine.Random.Range(0, spawnPoints.Length);
         return spawnPoints[randomIndex];
+    }
+
+    private bool AllEnemiesDefeated()
+    {
+        EnemyMovement[] activeEnemies = FindObjectsByType<EnemyMovement>(FindObjectsSortMode.None);
+        return activeEnemies.Length == 0;
     }
 }
