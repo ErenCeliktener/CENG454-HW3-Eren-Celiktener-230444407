@@ -8,6 +8,9 @@ public class Projectile : MonoBehaviour, IPoolable
     [SerializeField] private float lifeTime = 2f;
     [SerializeField] private LayerMask damageableLayers;
 
+    [Header("Hit Detection")]
+    [SerializeField] private float hitRadius = 0.12f;
+
     private Vector2 direction;
     private float lifeTimer;
     private bool isActive;
@@ -24,9 +27,28 @@ public class Projectile : MonoBehaviour, IPoolable
     private void Update()
     {
         if (!isActive)
+        {
             return;
+        }
 
-        transform.position += (Vector3)(direction * speed * Time.deltaTime);
+        float moveDistance = speed * Time.deltaTime;
+        Vector2 currentPosition = transform.position;
+
+        RaycastHit2D hit = Physics2D.CircleCast(
+            currentPosition,
+            hitRadius,
+            direction,
+            moveDistance,
+            damageableLayers
+        );
+
+        if (hit.collider != null)
+        {
+            HitTarget(hit.collider);
+            return;
+        }
+
+        transform.position += (Vector3)(direction * moveDistance);
 
         lifeTimer -= Time.deltaTime;
 
@@ -39,15 +61,26 @@ public class Projectile : MonoBehaviour, IPoolable
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!isActive)
+        {
             return;
+        }
 
         if (!IsInDamageableLayer(other.gameObject))
+        {
             return;
+        }
 
-        IDamageable damageable = other.GetComponent<IDamageable>();
+        HitTarget(other);
+    }
+
+    private void HitTarget(Collider2D targetCollider)
+    {
+        IDamageable damageable = targetCollider.GetComponent<IDamageable>();
 
         if (damageable == null)
+        {
             return;
+        }
 
         damageable.TakeDamage(damage);
         Despawn();
@@ -61,7 +94,9 @@ public class Projectile : MonoBehaviour, IPoolable
     private void Despawn()
     {
         if (!isActive)
+        {
             return;
+        }
 
         isActive = false;
         returnToPool?.Invoke(this);
